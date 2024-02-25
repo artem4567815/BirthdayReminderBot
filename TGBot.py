@@ -1,5 +1,5 @@
 import telebot
-from getDataFromPG import messages, getDataFromDB
+from getDataFromPG import getDataFromDB
 from config import chatId, token, stikerId
 import schedule
 from threading import Thread
@@ -11,19 +11,20 @@ bot = telebot.TeleBot(token=token)
 def schedule_checker():
     while True:
         schedule.run_pending()
-        sleep(3600)
+        sleep(1)
 
 
 def start():
-    for message in messages:
+    message = getDataFromDB()
+    if message != "":
         bot.send_message(chatId, message)
         bot.send_sticker(chatId, stikerId)
-        messages.remove(message)
         print("success")
 
 
-schedule.every(1).day.at("07:00").do(getDataFromDB)
-schedule.every(1).day.at("07:00").do(start)
-
+# schedule.every(1).day.at("07:00").do(getDataFromDB)
+# schedule.every(1).day.at("07:00").do(start(message))
+# schedule.every(1).minute.do(getDataFromDB)
+schedule.every(1).minute.do(start)
 Thread(target=schedule_checker).start()
 bot.polling(none_stop=True)
