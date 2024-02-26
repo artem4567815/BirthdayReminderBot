@@ -2,7 +2,6 @@ import telebot
 from getDataFromPG import getDataFromDB
 from config import token, stikerId
 import schedule
-from threading import Thread
 from time import sleep
 
 bot = telebot.TeleBot(token=token)
@@ -17,26 +16,32 @@ def schedule_checker():
 def strat(message):
     user = message.chat.id
     users.append(user)
-    bot.send_message(user, "success")
+    try:
+        bot.send_message(user, "success")
+    except:
+        print("ERROR")
 
 @bot.message_handler(commands=["unsubscribe"])
 def unsubscribe(message):
     if message.chat.id in users:
         users.remove(message.chat.id)
-    bot.send_message(message.chat.id, 'Отключили!')
+    try:
+        bot.send_message(message.chat.id, 'Отключили!')
+    except:
+        print("ERROR")
 def sendMessage():
     message = getDataFromDB()
     for user in users:
         chatId = user
         if message != "":
-            bot.send_message(chatId, message)
-            bot.send_sticker(chatId, stikerId)
-            print("success")
+            try:
+                bot.send_message(chatId, message, parse_mode="Markdown")
+                bot.send_sticker(chatId, stikerId)
+                print("success")
+            except:
+                print("ERROR")
 
 
-schedule.every(1).day.at("07:00").do(getDataFromDB)
-schedule.every(1).day.at("07:00").do(sendMessage)
-# schedule.every(1).minute.do(getDataFromDB)
-# schedule.every(1).minute.do(sendMessage)
-Thread(target=schedule_checker).start()
+# schedule.every(1).day.at("07:00").do(sendMessage)
+#schedule.every(1).minute.do(sendMessage)
 bot.polling(none_stop=True)
