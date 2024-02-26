@@ -4,22 +4,23 @@ import datetime
 
 date = datetime.date.today()
 users = []
-ends = []
 bedinOfMesssage = "🎉🎉🎉 Празднуем День Рождения: "
 lastMessage = ""
 endOfMessage = ""
 link = ""
 def getDataFromDB():
-    global lastMessage, link, ends, endOfMessage
+    global lastMessage, link, endOfMessage, users
     try:
         conn = psycopg2.connect(host=host, user=user, password=password, database=db_name)
         with conn.cursor() as cursor:
             cursor.execute(
-                f"SELECT name, birthday, telegram FROM users WHERE birthday = '{str(date)}';"
+                f"SELECT name, birthday, telegram FROM users WHERE birthday = '2024-02-26';"
             )
             informations = cursor.fetchall()
             for data in informations:
-                users.append({"name": data[0], "tg": data[2]})
+                if {"name": data[0], "tg": data[2]} not in users:
+                    users.append({"name": data[0], "tg": data[2]})
+                print(users)
             for people in users:
                 if people['name'] not in lastMessage:
                     if people['tg'][0] == "@":
@@ -40,5 +41,3 @@ def getDataFromDB():
     finally:
         if conn:
             conn.close()
-
-#getDataFromDB()

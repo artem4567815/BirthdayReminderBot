@@ -1,21 +1,18 @@
 import telebot
 from getDataFromPG import getDataFromDB
 from config import token, stikerId
-import schedule
-from time import sleep
+import json
+import os
 
 bot = telebot.TeleBot(token=token)
 users = []
-
-def schedule_checker():
-    while True:
-        schedule.run_pending()
-        sleep(1)
 
 @bot.message_handler(commands=['start'])
 def strat(message):
     user = message.chat.id
     users.append(user)
+    with open("clientId.txt", "w") as file:
+        json.dump(users, file, indent=1)
     try:
         bot.send_message(user, "success")
     except:
@@ -25,13 +22,19 @@ def strat(message):
 def unsubscribe(message):
     if message.chat.id in users:
         users.remove(message.chat.id)
+        with open("clientId.txt", "w") as file:
+            json.dump(users, file, indent=1)
     try:
         bot.send_message(message.chat.id, 'Отключили!')
     except:
         print("ERROR")
 def sendMessage():
+    useres = []
     message = getDataFromDB()
-    for user in users:
+    if os.path.isfile("clientId.txt"):
+        with open("clientId.txt", "r") as file:
+            useres = json.load(file)
+    for user in useres:
         chatId = user
         if message != "":
             try:
@@ -41,7 +44,5 @@ def sendMessage():
             except:
                 print("ERROR")
 
-
-# schedule.every(1).day.at("07:00").do(sendMessage)
-#schedule.every(1).minute.do(sendMessage)
-bot.polling(none_stop=True)
+if __name__ == "__main__":
+    bot.polling(none_stop=True)
