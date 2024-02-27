@@ -14,7 +14,7 @@ def getDataFromDB():
         conn = psycopg2.connect(host=host, user=user, password=password, database=db_name)
         with conn.cursor() as cursor:
             cursor.execute(
-                f"SELECT name, birthday, telegram FROM users WHERE birthday = '2024-02-26';"
+                f"SELECT name, birthday, telegram FROM users WHERE birthday = '{date}';"
             )
             informations = cursor.fetchall()
             for data in informations:
@@ -30,10 +30,13 @@ def getDataFromDB():
                     else:
                         link = "t.me/" + people['tg']
                     endOfMessage = endOfMessage + '\n' + people['name'] + " " + link
-            message = bedinOfMesssage + endOfMessage
-            if message != lastMessage:
-                lastMessage = message
-                return message
+            if users:
+                message = bedinOfMesssage + endOfMessage
+                if message != lastMessage:
+                    lastMessage = message
+                    return message
+                else:
+                    return ""
             else:
                 return ""
     except Exception as _ex:
