@@ -65,7 +65,9 @@ def get_message():
 
         with conn.cursor() as cursor:
             cursor.execute(
-                "SELECT DISTINCT id, name, telegram FROM users WHERE birthday = %s", [date]
+                """SELECT DISTINCT id, name, telegram FROM users WHERE
+    EXTRACT(MONTH FROM birthday) = EXTRACT(MONTH FROM TIMESTAMP %s) AND
+    EXTRACT(DAY FROM birthday) = EXTRACT(DAY FROM TIMESTAMP %s);""", [date, date]
             )
             birthday_users = list(map(user_to_dict, cursor.fetchall()))
 
