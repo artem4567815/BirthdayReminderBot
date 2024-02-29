@@ -1,13 +1,8 @@
-import telebot
-from methods import load_users, save_users
+from infrastructure import bot
+from methods import load_users, save_users, get_message
 from config import token, stikerId
-import json
-import os
-
-bot = telebot.TeleBot(token=token)
 
 users = []
-
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -20,6 +15,14 @@ def start(message):
 
     try:
         bot.send_message(user, "Подключено!")
+    except:
+        print("ERROR")
+
+
+@bot.message_handler(commands=['birthdays'])
+def get_birhdays(message):
+    try:
+        bot.send_message(message.chat.id, get_message())
     except:
         print("ERROR")
 

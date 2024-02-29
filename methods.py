@@ -1,6 +1,6 @@
 import psycopg2
 from config import host, user, password, db_name, stickerId
-from birthday_bot import bot
+from infrastructure import bot
 import json
 import datetime
 
