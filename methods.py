@@ -68,7 +68,6 @@ def get_message():
 
         with conn.cursor() as cursor:
             cursor.execute(query, [date, date])
-            print(date)
             birthday_users = list(map(user_to_dict, cursor.fetchall()))
 
             for person in birthday_users:
