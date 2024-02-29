@@ -20,11 +20,12 @@ def start(message):
 
 @bot.message_handler(commands=['birthdays'])
 def get_birhdays(message):
+    chat_id = message.chat.id
     try:
         message = get_message()
         if not message:
             message = "Сегодня никто не празднует :("
-        bot.send_message(message.chat.id, message)
+        bot.send_message(chat_id, message)
     except Exception as e:
         print("ERROR:", e)
 
