@@ -21,9 +21,12 @@ def start(message):
 @bot.message_handler(commands=['birthdays'])
 def get_birhdays(message):
     try:
-        bot.send_message(message.chat.id, get_message())
-    except:
-        print("ERROR")
+        message = get_message()
+        if not message:
+            message = "Сегодня никто не празднует :("
+        bot.send_message(message.chat.id, message)
+    except Exception as e:
+        print("ERROR:", e)
 
 
 @bot.message_handler(commands=["unsubscribe"])
