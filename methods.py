@@ -5,6 +5,9 @@ import json
 import datetime
 
 beginOfMesssage = "🎉🎉🎉 Празднуем День Рождения: "
+query = """SELECT DISTINCT id, name, telegram FROM users WHERE
+    EXTRACT(MONTH FROM birthday) = EXTRACT(MONTH FROM TIMESTAMP %s) AND
+    EXTRACT(DAY FROM birthday) = EXTRACT(DAY FROM TIMESTAMP %s);"""
 
 
 def load_users():
@@ -64,11 +67,8 @@ def get_message():
         conn = get_postgres_connection()
 
         with conn.cursor() as cursor:
-            cursor.execute(
-                """SELECT DISTINCT id, name, telegram FROM users WHERE
-    EXTRACT(MONTH FROM birthday) = EXTRACT(MONTH FROM TIMESTAMP %s) AND
-    EXTRACT(DAY FROM birthday) = EXTRACT(DAY FROM TIMESTAMP %s);""", [date, date]
-            )
+            cursor.execute(query, [date, date])
+            print(date)
             birthday_users = list(map(user_to_dict, cursor.fetchall()))
 
             for person in birthday_users:
