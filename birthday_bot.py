@@ -1,6 +1,5 @@
 from infrastructure import bot
 from methods import load_users, save_users, get_message
-from config import token, stikerId
 
 users = []
 
