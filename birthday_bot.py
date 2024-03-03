@@ -3,7 +3,7 @@ import time
 from infrastructure import bot
 from methods import load_users, save_users, get_message
 
-users = []
+users = load_users()
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -11,8 +11,7 @@ def start(message):
 
     if user not in users:
         users.append(user)
-
-    save_users(users)
+        save_users(users)
 
     try:
         bot.send_message(user, "Подключено!")

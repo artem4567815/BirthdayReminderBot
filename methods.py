@@ -24,6 +24,7 @@ def save_users(users):
 
 
 def sendMessage():
+    print("Running...")
     message = get_message()
 
     if message != "":

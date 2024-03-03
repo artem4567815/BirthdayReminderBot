@@ -5,3 +5,4 @@ db_name = ''
 chatId = ""
 token = ""
 stickerId = ""
+when = ""
