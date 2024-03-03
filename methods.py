@@ -19,7 +19,7 @@ def load_users():
 
 
 def save_users(users):
-    with open("users.txt", "w") as file:
+    with open("users.json", "w") as file:
         json.dump(users, file, indent=1)
 
 
