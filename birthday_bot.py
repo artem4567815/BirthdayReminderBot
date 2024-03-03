@@ -1,3 +1,5 @@
+import time
+
 from infrastructure import bot
 from methods import load_users, save_users, get_message
 
@@ -45,4 +47,8 @@ def unsubscribe(message):
 
 
 if __name__ == "__main__":
-    bot.polling(none_stop=True)
+    while True:
+        try:
+            bot.polling(none_stop=True)
+        except Exception as e:
+            time.sleep(1000)
