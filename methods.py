@@ -27,8 +27,11 @@ def sendMessage():
     print("Running...")
     message = get_message()
 
+    print(message)
+
     if message != "":
         for user in load_users():
+            print(user)
             try:
                 bot.send_message(user, message, parse_mode="Markdown")
                 bot.send_sticker(user, stickerId)
