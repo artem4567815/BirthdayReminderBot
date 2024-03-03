@@ -14,13 +14,17 @@ def load_users():
     try:
         with open('users.json') as file:
             return json.load(file)
-    except:
+    except Exception as e:
+        print(e)
         return []
 
 
 def save_users(users):
-    with open("users.json", "w") as file:
-        json.dump(users, file, indent=1)
+    try:
+        with open("users.json", "w") as file:
+            json.dump(users, file, indent=1)
+    except Exception as e:
+        print(e)
 
 
 def sendMessage():
